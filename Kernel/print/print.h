@@ -1,5 +1,5 @@
 #pragma once
-#include"/home/wutpups/Desktop/OSDev/Kernel/low_level.h"
+#include"/home/wutpups/Desktop/OSDev/FirstOS/Kernel/low_level.h"
 
 // VGA
 #define VGA_HEIGHT 25
@@ -39,6 +39,17 @@ int get_cursor_position(void)
     return pos;
 }
 
+void shift_content()
+{
+	memcpy((char*)(VID_MEM_ADDR + VGA_WIDTH * 2), (char*)VID_MEM_ADDR, 2 * VGA_WIDTH * VGA_HEIGHT);
+	
+	for(int i = 0; i < VGA_WIDTH * 2; i+=2)
+	{
+		*(VID_MEM_ADDR + (VGA_HEIGHT * 2 * VGA_WIDTH + i)) = ' ';
+		*(VID_MEM_ADDR + (VGA_HEIGHT * 2 * VGA_WIDTH + i + 1)) = 0x0f;
+	}
+}
+
 int get_offset(int col, int row)
 {
 	return 2 * (row * VGA_WIDTH + col);
@@ -67,13 +78,14 @@ void putc(char character, char attribute, int col, int row)
 
 	if(character == '\n')
 	{
-		if((posy) + 1 <= VGA_HEIGHT)
+		if(posy + 1 <= VGA_HEIGHT)
 		{
-			update_cursor(0, posy);
+			update_cursor(0, posy + 1);
 		}
 		else
 		{
-			update_cursor(0, posy + 1);
+			update_cursor(0, posy);
+			shift_content();
 		}
 		return;
 	}
@@ -86,7 +98,7 @@ void putc(char character, char attribute, int col, int row)
 		posx = 0;
 		if(posy + 1 > VGA_HEIGHT)
 		{
-			
+			shift_content();
 		}
 		else
 		{
@@ -111,10 +123,10 @@ void print(char* s)
 
 void clear_screen()
 {
-	for(int i = 0; i < VGA_WIDTH * VGA_HEIGHT * 2; i++)
+	for(int i = 0; i < VGA_WIDTH * VGA_HEIGHT * 2; i+=2)
 	{
-		*(VID_MEM_ADDR + i) = 0;
-		*(VID_MEM_ADDR + i + 1) = 0;
+		*(VID_MEM_ADDR + i) = ' ';
+		*(VID_MEM_ADDR + i + 1) = 0x0;
 	}
 
 	update_cursor(0,0);

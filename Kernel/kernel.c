@@ -3,5 +3,6 @@
 
 void main () {
     clear_screen();   
-    print("Hello World Hello World!");
+
+    print("Hello World!");
 }
