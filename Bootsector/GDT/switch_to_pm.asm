@@ -5,7 +5,7 @@ switch_to_pm:
     cli ; We must switch of interrupts until we have
     ; set -up the protected mode interrupt vector
     ; otherwise interrupts will run riot.
-    lgdt [gdt_descriptor] ; Load our global descriptor table , which defines
+    ; lgdt [gdt_descriptor] ; Load our global descriptor table , which defines
     ; the protected mode segments ( e.g. for code and data )
     mov eax, cr0 ; To make the switch to protected mode , we set
     or eax, 0x1 ; the first bit of CR0 , a control register
@@ -25,8 +25,6 @@ init_pm:
     mov es, ax
     mov fs, ax
     mov gs, ax
-
-    mov eax, 0x9000
 
     mov ebp, 0x9000 ; Update our stack position so it is right
     mov sp, bp ; at the top of the free space.

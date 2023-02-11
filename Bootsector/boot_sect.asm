@@ -19,20 +19,21 @@ jmp $
 ; Include our useful , hard - earned routines
 %include "print/print_string.asm"
 %include "disk_load.asm"
-%include "GDT/gdt.asm"
+;%include "GDT/gdt.asm"
 %include "../Kernel/print/print_string_pm.asm"
 %include "GDT/switch_to_pm.asm"
 
 [bits 16]
 ; load_kernel
 load_kernel :
-mov bx , MSG_LOAD_KERNEL ; Print a message to say we are loading the kernel
-call print_string
-mov bx , KERNEL_OFFSET ; Set -up parameters for our disk_load routine , so
-mov dh , 15 ; that we load the first 15 sectors ( excluding
-mov dl , [BOOT_DRIVE] ; the boot sector ) from the boot disk ( i.e. our
-call disk_load ; kernel code ) to address KERNEL_OFFSET
-ret
+    mov bx , MSG_LOAD_KERNEL ; Print a message to say we are loading the kernel
+    call print_string
+    mov bx , KERNEL_OFFSET ; Set -up parameters for our disk_load routine , so
+    mov dh , 15 ; that we load the first 15 sectors ( excluding
+    mov dl , [BOOT_DRIVE] ; the boot sector ) from the boot disk ( i.e. our
+    call disk_load ; kernel code ) to address KERNEL_OFFSET
+    ret
+
 [bits 32]
 ; This is where we arrive after switching to and initialising protected mode.
 

@@ -1,5 +1,4 @@
 #pragma once
-#include"/home/wutpups/Desktop/OSDev/FirstOS/Kernel/clib/low_level.h"
 
 // VGA
 #define VGA_HEIGHT 25
@@ -131,5 +130,3 @@ void clear_screen()
 
 	update_cursor(0,0);
 }
-
-/
