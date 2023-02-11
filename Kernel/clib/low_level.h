@@ -25,10 +25,3 @@ void port_word_out ( unsigned short port , unsigned short data ) {
     __asm__ ("out %%ax, %%dx" : :"a" (data), "d" (port));
 }
 
-void memcpy(char* src, char* dest, unsigned int num_bytes)
-{
-    for(int i = 0; i < num_bytes; i++)
-    {
-        *(dest + i) = *(src + i);
-    }
-}
